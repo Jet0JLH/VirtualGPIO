@@ -34,6 +34,7 @@ void setup() {
   }
   Serial.println("VirtualGPIO " + Version);
   initPins();
+  Serial.println("[READY]");
 }
 
 // the loop function runs over and over again forever
@@ -69,7 +70,37 @@ void selectCmd() {
     }
   }
   else if (inputString1 == "set") {
-    
+    if (inputString2 == "direction") {
+      
+    }
+    else if (inputString2 == "value") {
+      if (isAnalog(inputString3)) {
+        if (inputString4 == "0" || inputString4 == "low") {
+          digitalWrite(A0 + getPin(inputString3),LOW);
+        }
+        else if (inputString4 == "1" || inputString4 == "high") {
+          digitalWrite(A0 + getPin(inputString3),HIGH);
+        }
+        else {
+          printError(3);
+          return;
+        }
+      }
+      else {
+        if (inputString4 == "0" || inputString4 == "low") {
+          digitalWrite(getPin(inputString3),LOW);
+        }
+        else if (inputString4 == "1" || inputString4 == "high") {
+          digitalWrite(getPin(inputString3),HIGH);
+        }
+        else {
+          printError(3);
+          return;
+        }
+        
+      }
+      Serial.println("Write value [OK]");
+    }
   }
   else {
     printError(1);
@@ -121,6 +152,10 @@ void printError(int code) {
       Serial.println("Error 2 Unknown commandparameter");
       break;
     }
+    case 3: {
+      Serial.println("Error 3 Unknown value");
+      break;
+    }
   }
 }
 boolean isAnalog(String pin) {
@@ -132,7 +167,12 @@ boolean isAnalog(String pin) {
   }
 }
 int getPin(String pin) {
-  return pin.substring(1).toInt();
+  if (pin.startsWith("a") || pin.startsWith("d")) {
+    return pin.substring(1).toInt(); 
+  }
+  else {
+    return pin.toInt();
+  }
 }
 
 void initPins() {
