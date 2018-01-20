@@ -71,7 +71,31 @@ void selectCmd() {
   }
   else if (inputString1 == "set") {
     if (inputString2 == "direction") {
-      
+      if (isAnalog(inputString3)) {
+        if (inputString4 == "0" || inputString4 == "input") {
+          pinMode(A0 + getPin(inputString3),INPUT);
+        }
+        else if (inputString4 == "1" || inputString4 == "output") {
+          pinMode(A0 + getPin(inputString3),OUTPUT);
+        }
+        else {
+          printError(4);
+          return;
+        }
+      }
+      else {
+        if (inputString4 == "0" || inputString4 == "input") {
+          pinMode(getPin(inputString3),INPUT);
+        }
+        else if (inputString4 == "1" || inputString4 == "output") {
+          pinMode(getPin(inputString3),OUTPUT);
+        }
+        else {
+          printError(4);
+          return;
+        }
+      }
+      Serial.println("Write direction [OK]");
     }
     else if (inputString2 == "value") {
       if (isAnalog(inputString3)) {
@@ -154,6 +178,10 @@ void printError(int code) {
     }
     case 3: {
       Serial.println("Error 3 Unknown value");
+      break;
+    }
+    case 4: {
+      Serial.println("Error 3 Unknown direction");
       break;
     }
   }
