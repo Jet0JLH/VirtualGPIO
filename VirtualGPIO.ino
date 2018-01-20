@@ -8,7 +8,11 @@ String inputString1 = "";
 String inputString2 = "";
 String inputString3 = "";
 String inputString4 = "";
-static String Version = "Version 0.1";
+const String Version = "Version 0.1";
+const byte firstDigitalPin = 2;
+const byte firstAnalogPin = 0;
+const byte lastDigitalPin = 13;
+const byte lastAnalogPin = 7;
 int activeString = 0;
 boolean stringComplete = false;
 
@@ -29,6 +33,7 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   }
   Serial.println("VirtualGPIO " + Version);
+  initPins();
 }
 
 // the loop function runs over and over again forever
@@ -128,5 +133,17 @@ boolean isAnalog(String pin) {
 }
 int getPin(String pin) {
   return pin.substring(1).toInt();
+}
+
+void initPins() {
+  //Init DigitalPins as Outputs
+  for (int i=firstDigitalPin; i < lastDigitalPin + 1; i++) {
+    pinMode(i, OUTPUT);
+  }
+  //Init AnalogPins as Outputs
+  for (int i=firstAnalogPin + A0; i < lastAnalogPin + 1 + A0; i++) {
+    pinMode(i, OUTPUT);
+  }
+  
 }
 
