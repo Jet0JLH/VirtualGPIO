@@ -75,6 +75,13 @@ void executeCmd() {
       break;
     case 34: //setValue
       setValue(src[1]-65,src[2]);
+      Serial.print(0);
+      break;
+    case 35: //getDirection
+      Serial.print(pins[src[1]-65][0]);
+      break;
+    case 36: //getValue
+      Serial.print(pins[src[1]-65][1]);
       break;
   }
 }
